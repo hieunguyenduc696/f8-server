@@ -9,7 +9,8 @@ const courseSchema = mongoose.Schema({
     purchaseBadge: { type: Object, default: {}},
     url: { type: [String], default: []},
     selectedFile: String,
-    user: { type: Number, default: 0}
+    user: { type: Number, default: 0},
+    id: String
 })
 
 const Course = mongoose.model('Course', courseSchema)

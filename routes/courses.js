@@ -1,10 +1,11 @@
 import express from 'express'
 
-import { getHTMLCSSCourse, createCourse } from '../controllers/courses.js'
+import { getCourse, getCourses, createCourse } from '../controllers/courses.js'
 
 const router = express.Router()
 
-router.get('/html-css', getHTMLCSSCourse)
+router.get(`/:id`, getCourse)
+router.get(`/`, getCourses)
 router.post('/', createCourse)
 
 export default router
