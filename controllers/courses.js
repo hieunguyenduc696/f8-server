@@ -20,23 +20,18 @@ export const getCourses = async (req, res) => {
 
 export const getCourse = async (req, res) => {
     const { id } = req.params
-    let courseName = ''
-    if (id === '1') {
-        courseName = 'html-css'
-    }
     try {
         let courses
-        // console.log(courseName)
-        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\${courseName}.txt`, 'utf-8', (err, result) => {
+        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\html-css.txt`, 'utf-8', (err, result) => {
             if (err) {
                 console.error(err)
                 return
             }
             courses = "{" + result + "}"
             courses = (JSON.parse(`${courses}`))
-            res.status(200).json(courses)
+            let course = courses.courses.find(c => c.id === Number(id))
+            res.status(200).json(course)
         })
-        // console.log(courses)
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
