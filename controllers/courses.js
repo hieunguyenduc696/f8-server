@@ -4,7 +4,7 @@ import { readFile } from 'fs'
 export const getCourses = async (req, res) => {
     try {
         let courses
-        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\html-css.txt`, 'utf-8', (err, result) => {
+        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\totalCourses.txt`, 'utf-8', (err, result) => {
             if (err) {
                 console.error(err)
                 return
@@ -22,7 +22,7 @@ export const getCourse = async (req, res) => {
     const { id } = req.params
     try {
         let courses
-        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\html-css.txt`, 'utf-8', (err, result) => {
+        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\totalCourses.txt`, 'utf-8', (err, result) => {
             if (err) {
                 console.error(err)
                 return
