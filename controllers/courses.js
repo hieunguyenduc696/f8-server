@@ -36,6 +36,3 @@ export const getCourse = async (req, res) => {
         res.status(404).json({ message: error.message })
     }
 }
-export const createCourse = (req, res) => {
-    res.send('hello')
-}
