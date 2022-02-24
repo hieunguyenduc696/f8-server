@@ -10,7 +10,8 @@ const courseSchema = mongoose.Schema({
     url: { type: [String], default: []},
     selectedFile: String,
     user: { type: Number, default: 0},
-    id: String
+    id: String,
+    registers: { type: [String], default: [] }
 })
 
 const Course = mongoose.model('Course', courseSchema)
