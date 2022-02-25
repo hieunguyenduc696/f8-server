@@ -11,7 +11,8 @@ const courseSchema = mongoose.Schema({
     selectedFile: String,
     user: { type: Number, default: 0},
     id: String,
-    registers: { type: [String], default: [] }
+    registers: { type: [String], default: [] },
+    state: { type: [Number], default: [] }
 })
 
 const Course = mongoose.model('Course', courseSchema)

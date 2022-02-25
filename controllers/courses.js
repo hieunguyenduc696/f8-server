@@ -55,6 +55,49 @@ export const registerCourse = async (req, res) => {
             courses = (JSON.parse(`${courses}`))
             course = courses.courses.find(c => c.id === Number(id))
             course.registers.push(req.userId)
+            course.available[0][0].push(req.userId)
+            writeFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\totalCoursesSave.txt`, JSON.stringify(courses).slice(1,-1), (err, result) => {
+                if (err) {
+                    console.log(err)
+                    return
+                }
+                console.log(result)
+            })
+            res.status(200).json(course);
+        })
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+export const seenCourse = async (req, res) => {
+    const { id } = req.params
+    let { i, j } = req.body
+    if (!req.userId) {
+        return res.json({ message: "Unauthenticated" });
+    }
+    console.log(req.body)
+    let courses
+    let course
+    try {
+        readFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\totalCoursesSave.txt`, 'utf-8', (err, result) => {
+            if (err) {
+                console.error(err)
+                return
+            }
+            courses = "{" + result + "}"
+            courses = (JSON.parse(`${courses}`))
+            course = courses.courses.find(c => c.id === Number(id))
+            if (!course.state[i][j].find(c => c === req.userId)) {
+                course.state[i][j].push(req.userId)
+            }
+            if (j + 1 == course.state[i].length) {
+                i+=1
+                j=-1
+            }
+            if (!course.available[i][j+1].find(c => c === req.userId)) {
+                course.available[i][j+1].push(req.userId)
+            }
             writeFile(`C:\\Users\\hieun\\Desktop\\f8-clone\\server\\data\\totalCoursesSave.txt`, JSON.stringify(courses).slice(1,-1), (err, result) => {
                 if (err) {
                     console.log(err)
