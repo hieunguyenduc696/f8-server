@@ -43,3 +43,17 @@ export const signup = async (req, res) => {
         res.status(500).json({ message: 'Something went wrong' })
     }
 }
+
+export const getUserById = async (req, res, next) => {
+    let user;
+    try {
+      user = await User.findById(req.params.uid);
+    } catch (err) {
+      const error = new HttpError(
+        "Fetching user failed, please try again later.",
+        500
+      );
+      return next(error);
+    }
+    res.json({ user: user.toObject({ getters: true }) });
+};

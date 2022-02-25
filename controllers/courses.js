@@ -1,5 +1,6 @@
-import Course from '../models/courses.js'
 import mongoose from 'mongoose'
+import Comment from '../models/comments.js'
+import User from '../models/users.js'
 import { readFile, writeFile } from 'fs'
 
 export const getCourses = async (req, res) => {
@@ -76,7 +77,6 @@ export const seenCourse = async (req, res) => {
     if (!req.userId) {
         return res.json({ message: "Unauthenticated" });
     }
-    console.log(req.body)
     let courses
     let course
     try {
@@ -103,10 +103,48 @@ export const seenCourse = async (req, res) => {
                     console.log(err)
                     return
                 }
-                console.log(result)
+                // console.log(result)
             })
             res.status(200).json(course);
         })
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+export const createComment = async (req, res) => {
+    const { id } = req.params
+    const { content, i, j, name, image } = req.body
+    const userId = req.userId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        try {
+            const comment = await Comment.create({ videoId: id, position: [i, j], userId, userName: name, content: content, image })
+            res.status(201).json(comment)
+        } catch (error) {
+            res.status(404).json({ message: error.message })
+        }
+    } else {
+        let user
+        try {
+            user = await User.findById(userId);
+        } catch (err) {
+            res.json({ message: err.message })
+        }
+        try {
+            const comment = await Comment.create({ videoId: id, position: [i, j], userId, userName: user.name, content: content })
+            res.status(201).json(comment)
+        } catch (error) {
+            res.status(404).json({ message: error.message })
+        }
+    }
+}
+
+export const getComment = async (req, res) => {
+    const { id } = req.params
+    const {i, j} = req.query
+    try {
+        const comments = await Comment.find({ videoId: id, position: [Number(i), Number(j)] })
+        res.status(200).json(comments.reverse())
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
